@@ -1,4 +1,4 @@
-# Continuous Integration Desktop
+# EasyCO
 
 Este projeto é uma aplicação desktop para automação de processos de **Continuous Integration (CI)**, permitindo o monitoramento de repositórios Git e a execução de builds automatizados utilizando **Docker**.
 
