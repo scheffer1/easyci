@@ -9,4 +9,14 @@
         <RootNamespace>EasyCI</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="LibGit2Sharp" Version="0.29.0" />
+      <PackageReference Include="Docker.DotNet" Version="3.125.15" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.1.24081.2" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.1.24081.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
 </Project>
