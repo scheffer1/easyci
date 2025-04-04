@@ -26,9 +26,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarGit_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de repositórios Git
-        MessageBox.Show("Funcionalidade de listagem de repositórios Git será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de repositórios Git
+        var gitRepositoryListView = new Views.GitRepositoryListView();
+        gitRepositoryListView.ShowDialog();
     }
 
     private void BtnCadastrarDocker_Click(object sender, RoutedEventArgs e)
@@ -40,9 +40,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarDocker_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de containers Docker
-        MessageBox.Show("Funcionalidade de listagem de containers Docker será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de containers Docker
+        var dockerContainerListView = new Views.DockerContainerListView();
+        dockerContainerListView.ShowDialog();
     }
 
     private void BtnCriarProjeto_Click(object sender, RoutedEventArgs e)
@@ -54,9 +54,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarProjetos_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de projetos CI
-        MessageBox.Show("Funcionalidade de listagem de projetos CI será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de projetos CI
+        var ciProjectListView = new Views.CIProjectListView();
+        ciProjectListView.ShowDialog();
     }
 
     private void BtnMonitoramento_Click(object sender, RoutedEventArgs e)

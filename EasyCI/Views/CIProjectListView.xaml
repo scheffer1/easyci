@@ -1,0 +1,60 @@
+<Window x:Class="EasyCI.Views.CIProjectListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyCI.Views"
+        mc:Ignorable="d"
+        Title="Projetos CI" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Projetos de Integração Contínua" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="Gerencie os projetos de integração contínua cadastrados no sistema." TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Barra de Ferramentas -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button x:Name="BtnAdd" Content="Adicionar" Padding="15,8" Margin="0,0,10,0" Click="BtnAdd_Click"/>
+            <Button x:Name="BtnEdit" Content="Editar" Padding="15,8" Margin="0,0,10,0" Click="BtnEdit_Click"/>
+            <Button x:Name="BtnDelete" Content="Excluir" Padding="15,8" Margin="0,0,10,0" Click="BtnDelete_Click"/>
+            <Button x:Name="BtnRefresh" Content="Atualizar" Padding="15,8" Margin="0,0,10,0" Click="BtnRefresh_Click"/>
+            <Button x:Name="BtnBuild" Content="Executar Build" Padding="15,8" Margin="0,0,10,0" Click="BtnBuild_Click"/>
+            <Button x:Name="BtnDetails" Content="Detalhes" Padding="15,8" Margin="0,0,10,0" Click="BtnDetails_Click"/>
+        </StackPanel>
+
+        <!-- Lista de Projetos -->
+        <DataGrid x:Name="DgProjects" Grid.Row="2" AutoGenerateColumns="False"
+                  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                  BorderThickness="1" BorderBrush="#DDDDDD"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  CanUserReorderColumns="True" CanUserResizeColumns="True"
+                  CanUserSortColumns="True" AlternatingRowBackground="#F5F5F5"
+                  RowHeaderWidth="0" MouseDoubleClick="DgProjects_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Repositório Git" Binding="{Binding GitRepository.Name}" Width="200"/>
+                <DataGridTextColumn Header="Container Docker" Binding="{Binding DockerContainer.Name}" Width="200"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120"/>
+                <DataGridTextColumn Header="Último Build" Binding="{Binding LastBuildDate, StringFormat=dd/MM/yyyy HH:mm}" Width="150"/>
+                <DataGridCheckBoxColumn Header="Auto Build" Binding="{Binding AutoBuild}" Width="80"/>
+                <DataGridCheckBoxColumn Header="Ativo" Binding="{Binding IsActive}" Width="70"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Barra de Status -->
+        <StatusBar Grid.Row="3" Height="30" Margin="0,10,0,0">
+            <TextBlock x:Name="TxtStatus" Text="Pronto"/>
+        </StatusBar>
+    </Grid>
+</Window>

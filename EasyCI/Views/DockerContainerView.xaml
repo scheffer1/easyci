@@ -4,22 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyCI.Views"
+        xmlns:viewmodels="clr-namespace:EasyCI.ViewModels"
         mc:Ignorable="d"
         Title="Cadastro de Container Docker" Height="500" Width="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <!-- Cabeçalho -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
             <TextBlock Text="Cadastro de Container Docker" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
             <TextBlock Text="Preencha os dados do container Docker que será utilizado para execução dos builds." TextWrapping="Wrap"/>
         </StackPanel>
-        
+
         <!-- Formulário -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -36,27 +38,27 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <!-- Nome -->
             <Label Grid.Row="0" Grid.Column="0" Content="Nome:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Padding="5"/>
-            
+            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Name}"/>
+
             <!-- Host -->
             <Label Grid.Row="1" Grid.Column="0" Content="Host:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="localhost"/>
-            
+            <TextBox x:Name="TxtHost" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Host}"/>
+
             <!-- Porta -->
             <Label Grid.Row="2" Grid.Column="0" Content="Porta:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="2375"/>
-            
+            <TextBox x:Name="TxtPort" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Port}"/>
+
             <!-- Versão da API -->
             <Label Grid.Row="3" Grid.Column="0" Content="Versão da API:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="v1.41"/>
-            
+            <TextBox x:Name="TxtApiVersion" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding ApiVersion}"/>
+
             <!-- Usar TLS -->
             <Label Grid.Row="4" Grid.Column="0" Content="Usar TLS:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <CheckBox Grid.Row="4" Grid.Column="1" Content="Habilitar TLS" VerticalAlignment="Center" Margin="0,0,0,10"/>
-            
+            <CheckBox x:Name="ChkUseTLS" Grid.Row="4" Grid.Column="1" Content="Habilitar TLS" IsChecked="{Binding UseTLS}" VerticalAlignment="Center" Margin="0,0,0,10"/>
+
             <!-- Certificado -->
             <Label Grid.Row="5" Grid.Column="0" Content="Certificado:" VerticalAlignment="Center" Margin="0,0,10,10"/>
             <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
@@ -64,19 +66,19 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Padding="5" IsReadOnly="True"/>
-                <Button Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Padding="10,5"/>
+                <TextBox x:Name="TxtCertificatePath" Grid.Column="0" Padding="5" IsReadOnly="True" Text="{Binding CertificatePath}"/>
+                <Button x:Name="BtnSelectCertificate" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Padding="10,5" Click="BtnSelectCertificate_Click"/>
             </Grid>
-            
+
             <!-- Status -->
             <Label Grid.Row="6" Grid.Column="0" Content="Status:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <CheckBox Grid.Row="6" Grid.Column="1" Content="Ativo" IsChecked="True" VerticalAlignment="Center" Margin="0,0,0,10"/>
+            <CheckBox x:Name="ChkIsActive" Grid.Row="6" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" VerticalAlignment="Center" Margin="0,0,0,10"/>
         </Grid>
-        
+
         <!-- Botões -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Cancelar" Padding="15,8" Margin="0,0,10,0"/>
-            <Button Content="Salvar" Padding="15,8" Background="#0078D7" Foreground="White"/>
+            <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
+            <Button x:Name="BtnSave" Content="Salvar" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
         </StackPanel>
     </Grid>
 </Window>
