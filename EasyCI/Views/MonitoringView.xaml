@@ -26,14 +26,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Filtros -->
+            <!-- Filtros e Botões -->
             <Grid Grid.Row="0" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Padding="5" Margin="0,0,10,0"/>
-                <ComboBox Grid.Column="1" Width="150" SelectedIndex="0">
+
+                <!-- Botão Voltar à esquerda -->
+                <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Margin="0,0,10,0" Click="BtnBack_Click"/>
+
+                <!-- Filtro de texto -->
+                <TextBox Grid.Column="1" Padding="5" Margin="0,0,10,0"/>
+
+                <!-- Filtro de status -->
+                <ComboBox Grid.Column="2" Width="150" SelectedIndex="0">
                     <ComboBoxItem Content="Todos os Status"/>
                     <ComboBoxItem Content="Em Execução"/>
                     <ComboBoxItem Content="Concluído"/>

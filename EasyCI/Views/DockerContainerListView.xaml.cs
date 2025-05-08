@@ -34,13 +34,13 @@ namespace EasyCI.Views
             {
                 TxtStatus.Text = "Carregando containers...";
                 var containers = await _dockerContainerService.GetAllAsync();
-                
+
                 _containers.Clear();
                 foreach (var container in containers)
                 {
                     _containers.Add(container);
                 }
-                
+
                 DgContainers.ItemsSource = _containers;
                 TxtStatus.Text = $"Containers carregados: {_containers.Count}";
             }
@@ -97,16 +97,16 @@ namespace EasyCI.Views
             var selectedContainer = DgContainers.SelectedItem as DockerContainer;
             if (selectedContainer != null)
             {
-                var result = MessageBox.Show($"Tem certeza que deseja excluir o container '{selectedContainer.Name}'?", 
+                var result = MessageBox.Show($"Tem certeza que deseja excluir o container '{selectedContainer.Name}'?",
                     "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                
+
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
                         TxtStatus.Text = "Excluindo container...";
                         var success = await _dockerContainerService.DeleteAsync(selectedContainer.Id);
-                        
+
                         if (success)
                         {
                             // Recarregar a lista após excluir
@@ -135,6 +135,12 @@ namespace EasyCI.Views
         private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             await LoadContainersAsync();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela principal
+            Close();
         }
     }
 }

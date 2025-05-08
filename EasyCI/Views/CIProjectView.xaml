@@ -70,9 +70,20 @@
         </Grid>
 
         <!-- Botões -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
-            <Button x:Name="BtnSave" Content="Criar Projeto" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Botão Voltar à esquerda -->
+            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Click="BtnBack_Click"/>
+
+            <!-- Botões Cancelar e Salvar à direita -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
+                <Button x:Name="BtnSave" Content="Criar Projeto" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

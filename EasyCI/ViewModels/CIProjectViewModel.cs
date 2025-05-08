@@ -44,7 +44,6 @@ namespace EasyCI.ViewModels
             _dockerContainers = new ObservableCollection<DockerContainer>();
             LoadRepositoriesAndContainers();
             
-            // Selecionar os itens correspondentes
             if (project.GitRepository != null)
                 SelectedGitRepository = project.GitRepository;
             

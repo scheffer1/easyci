@@ -139,6 +139,12 @@ namespace EasyCI.Views
             await LoadProjectsAsync();
         }
 
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela principal
+            Close();
+        }
+
         private void BtnDetails_Click(object sender, RoutedEventArgs e)
         {
             var selectedProject = DgProjects.SelectedItem as CIProject;

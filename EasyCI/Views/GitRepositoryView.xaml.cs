@@ -69,5 +69,12 @@ namespace EasyCI.Views
             DialogResult = false;
             Close();
         }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela anterior (mesma ação do Cancelar)
+            DialogResult = false;
+            Close();
+        }
     }
 }

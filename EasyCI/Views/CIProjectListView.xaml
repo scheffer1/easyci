@@ -23,14 +23,25 @@
         </StackPanel>
 
         <!-- Barra de Ferramentas -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-            <Button x:Name="BtnAdd" Content="Adicionar" Padding="15,8" Margin="0,0,10,0" Click="BtnAdd_Click"/>
-            <Button x:Name="BtnEdit" Content="Editar" Padding="15,8" Margin="0,0,10,0" Click="BtnEdit_Click"/>
-            <Button x:Name="BtnDelete" Content="Excluir" Padding="15,8" Margin="0,0,10,0" Click="BtnDelete_Click"/>
-            <Button x:Name="BtnRefresh" Content="Atualizar" Padding="15,8" Margin="0,0,10,0" Click="BtnRefresh_Click"/>
-            <Button x:Name="BtnBuild" Content="Executar Build" Padding="15,8" Margin="0,0,10,0" Click="BtnBuild_Click"/>
-            <Button x:Name="BtnDetails" Content="Detalhes" Padding="15,8" Margin="0,0,10,0" Click="BtnDetails_Click"/>
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Botão Voltar à esquerda -->
+            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Click="BtnBack_Click"/>
+
+            <!-- Botões de ação à direita -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnAdd" Content="Adicionar" Padding="15,8" Margin="0,0,10,0" Click="BtnAdd_Click"/>
+                <Button x:Name="BtnEdit" Content="Editar" Padding="15,8" Margin="0,0,10,0" Click="BtnEdit_Click"/>
+                <Button x:Name="BtnDelete" Content="Excluir" Padding="15,8" Margin="0,0,10,0" Click="BtnDelete_Click"/>
+                <Button x:Name="BtnRefresh" Content="Atualizar" Padding="15,8" Margin="0,0,10,0" Click="BtnRefresh_Click"/>
+                <Button x:Name="BtnBuild" Content="Executar Build" Padding="15,8" Margin="0,0,10,0" Click="BtnBuild_Click"/>
+                <Button x:Name="BtnDetails" Content="Detalhes" Padding="15,8" Margin="0,0,10,0" Click="BtnDetails_Click"/>
+            </StackPanel>
+        </Grid>
 
         <!-- Lista de Projetos -->
         <DataGrid x:Name="DgProjects" Grid.Row="2" AutoGenerateColumns="False"

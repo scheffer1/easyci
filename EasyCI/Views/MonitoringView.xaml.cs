@@ -11,5 +11,11 @@ namespace EasyCI.Views
         {
             InitializeComponent();
         }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela principal
+            Close();
+        }
     }
 }

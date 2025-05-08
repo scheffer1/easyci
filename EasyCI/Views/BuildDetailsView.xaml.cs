@@ -117,7 +117,7 @@ namespace EasyCI.Views
             try
             {
                 string workspacePath = _buildService.GetProjectWorkspacePath(_projectId);
-                
+
                 if (Directory.Exists(workspacePath))
                 {
                     Process.Start("explorer.exe", workspacePath);
@@ -135,6 +135,12 @@ namespace EasyCI.Views
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela anterior (mesma ação do Fechar)
             Close();
         }
     }

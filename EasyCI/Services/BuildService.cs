@@ -10,16 +10,16 @@ namespace EasyCI.Services
     /// </summary>
     public class BuildService
     {
-        private readonly GitService _gitService;
+        private readonly RemoteOperationService _remoteOperationService;
         private readonly CIProjectService _ciProjectService;
         private readonly string _workspacePath;
 
         public BuildService()
         {
-            _gitService = new GitService();
+            _remoteOperationService = new RemoteOperationService();
             _ciProjectService = new CIProjectService();
 
-            // Definir o diretório de trabalho para os projetos
+            // Definir o diretório de trabalho para os projetos (usado apenas para logs locais)
             _workspacePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "EasyCI",
@@ -81,9 +81,13 @@ namespace EasyCI.Services
                 await _ciProjectService.UpdateAsync(project);
                 await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
 
-                // Clonar o repositório
-                await LogAsync(logPath, $"[{DateTime.Now}] Clonando repositório para {projectPath}...\n");
-                var cloneResult = await _gitService.CloneRepositoryAsync(project.GitRepository, projectPath);
+                // Clonar o repositório remotamente
+                await LogAsync(logPath, $"[{DateTime.Now}] Clonando repositório no host remoto {project.DockerContainer.Host}...\n");
+                var cloneResult = await _remoteOperationService.CloneRepositoryAsync(
+                    project.DockerContainer,
+                    project.GitRepository,
+                    project.Id);
+
                 await LogAsync(logPath, $"[{DateTime.Now}] Resultado do clone: {cloneResult.Message}\n");
 
                 if (!cloneResult.Success)
@@ -101,16 +105,26 @@ namespace EasyCI.Services
                 await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
                 await LogAsync(logPath, $"[{DateTime.Now}] Data do último build atualizada: {project.LastBuildDate}\n");
 
-                // Verificar se o arquivo docker-compose.yml existe
-                string composeFilePath = Path.Combine(projectPath, project.ComposeFilePath);
-                if (File.Exists(composeFilePath))
+                // Verificar se o arquivo docker-compose.yml existe e executá-lo
+                await LogAsync(logPath, $"[{DateTime.Now}] Verificando e executando docker-compose no host remoto...\n");
+                var composeResult = await _remoteOperationService.ExecuteDockerComposeAsync(
+                    project.DockerContainer,
+                    project.Id,
+                    project.ComposeFilePath);
+
+                await LogAsync(logPath, $"[{DateTime.Now}] Resultado do Docker Compose: {composeResult.Message}\n");
+
+                if (!composeResult.Success)
                 {
-                    await LogAsync(logPath, $"[{DateTime.Now}] Arquivo docker-compose encontrado: {composeFilePath}\n");
-                    await LogAsync(logPath, $"[{DateTime.Now}] A execução do Docker Compose será implementada em uma etapa futura.\n");
+                    project.Status = $"Aviso: {composeResult.Message}";
+                    await _ciProjectService.UpdateAsync(project);
+                    await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
                 }
                 else
                 {
-                    await LogAsync(logPath, $"[{DateTime.Now}] Arquivo docker-compose não encontrado: {composeFilePath}\n");
+                    project.Status = "Docker Compose executado com sucesso";
+                    await _ciProjectService.UpdateAsync(project);
+                    await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
                 }
 
                 await LogAsync(logPath, $"[{DateTime.Now}] Build concluído com sucesso.\n");

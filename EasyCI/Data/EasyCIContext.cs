@@ -17,7 +17,6 @@ namespace EasyCI.Data
                 "EasyCI",
                 "easyci.db");
 
-            // Garantir que o diretório existe
             Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
 
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
@@ -25,15 +24,12 @@ namespace EasyCI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configurações para GitRepository
             modelBuilder.Entity<GitRepository>()
                 .HasKey(g => g.Id);
 
-            // Configurações para DockerContainer
             modelBuilder.Entity<DockerContainer>()
                 .HasKey(d => d.Id);
 
-            // Configurações para CIProject
             modelBuilder.Entity<CIProject>()
                 .HasKey(c => c.Id);
 

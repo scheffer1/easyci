@@ -34,13 +34,13 @@ namespace EasyCI.Views
             {
                 TxtStatus.Text = "Carregando repositórios...";
                 var repositories = await _gitRepositoryService.GetAllAsync();
-                
+
                 _repositories.Clear();
                 foreach (var repo in repositories)
                 {
                     _repositories.Add(repo);
                 }
-                
+
                 DgRepositories.ItemsSource = _repositories;
                 TxtStatus.Text = $"Repositórios carregados: {_repositories.Count}";
             }
@@ -97,16 +97,16 @@ namespace EasyCI.Views
             var selectedRepository = DgRepositories.SelectedItem as GitRepository;
             if (selectedRepository != null)
             {
-                var result = MessageBox.Show($"Tem certeza que deseja excluir o repositório '{selectedRepository.Name}'?", 
+                var result = MessageBox.Show($"Tem certeza que deseja excluir o repositório '{selectedRepository.Name}'?",
                     "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                
+
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
                         TxtStatus.Text = "Excluindo repositório...";
                         var success = await _gitRepositoryService.DeleteAsync(selectedRepository.Id);
-                        
+
                         if (success)
                         {
                             // Recarregar a lista após excluir
@@ -135,6 +135,12 @@ namespace EasyCI.Views
         private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             await LoadRepositoriesAsync();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Voltar para a tela principal
+            Close();
         }
     }
 }

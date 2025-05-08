@@ -120,6 +120,19 @@ namespace EasyCI.ViewModels
             }
         }
 
+        public bool UseDockerApi
+        {
+            get => _container.UseDockerApi;
+            set
+            {
+                if (_container.UseDockerApi != value)
+                {
+                    _container.UseDockerApi = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool IsActive
         {
             get => _container.IsActive;
@@ -128,6 +141,21 @@ namespace EasyCI.ViewModels
                 if (_container.IsActive != value)
                 {
                     _container.IsActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+
+        public string RemoteWorkspacePath
+        {
+            get => _container.RemoteWorkspacePath;
+            set
+            {
+                if (_container.RemoteWorkspacePath != value)
+                {
+                    _container.RemoteWorkspacePath = value;
                     OnPropertyChanged();
                 }
             }
@@ -168,6 +196,8 @@ namespace EasyCI.ViewModels
                 CertificatePath = openFileDialog.FileName;
             }
         }
+
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
