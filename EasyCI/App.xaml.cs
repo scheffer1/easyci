@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using EasyCI.Services;
+using EasyCI.Themes;
 
 namespace EasyCI;
 
@@ -14,5 +15,8 @@ public partial class App : Application
 
         // Inicializa o banco de dados
         DatabaseInitializer.Initialize();
+
+        // Inicializa o gerenciador de temas
+        ThemeManager.Initialize();
     }
 }

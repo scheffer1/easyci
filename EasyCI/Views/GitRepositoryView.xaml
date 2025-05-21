@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         Title="Cadastro de Repositório Git" Height="500" Width="800"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
         Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -17,8 +19,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Cadastro de Repositório Git" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock Text="Preencha os dados do repositório Git que deseja monitorar." TextWrapping="Wrap"/>
+            <TextBlock Text="Cadastro de Repositório Git" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Preencha os dados do repositório Git que deseja monitorar." TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -36,31 +38,31 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Nome:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Name}"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Nome:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="1" Grid.Column="0" Content="URL:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtUrl" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Url}"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="URL:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtUrl" Grid.Row="1" Grid.Column="1" Text="{Binding Url}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Branch:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtBranch" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Branch}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Branch:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtBranch" Grid.Row="2" Grid.Column="1" Text="{Binding Branch}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="3" Grid.Column="0" Content="Usuário:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtUsername" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Username}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Usuário:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtUsername" Grid.Row="3" Grid.Column="1" Text="{Binding Username}" Style="{DynamicResource FormTextBoxStyle}"/>
 
             <!-- Chave SSH -->
-            <Label Grid.Row="4" Grid.Column="0" Content="Chave SSH:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Chave SSH:" Style="{DynamicResource FormLabelStyle}"/>
             <Grid Grid.Row="4" Grid.Column="1" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="TxtSshKeyPath" Grid.Column="0" Padding="5" IsReadOnly="True" Text="{Binding SshKeyPath}"/>
-                <Button x:Name="BtnSelectSshKey" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Padding="10,5" Click="BtnSelectSshKey_Click"/>
+                <TextBox x:Name="TxtSshKeyPath" Grid.Column="0" IsReadOnly="True" Text="{Binding SshKeyPath}" Style="{DynamicResource FormTextBoxStyle}" Margin="0"/>
+                <Button x:Name="BtnSelectSshKey" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Click="BtnSelectSshKey_Click" Style="{DynamicResource FormButtonStyle}"/>
             </Grid>
 
-            <Label Grid.Row="5" Grid.Column="0" Content="Status:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <CheckBox x:Name="ChkIsActive" Grid.Row="5" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" VerticalAlignment="Center" Margin="0,0,0,10"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="Status:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkIsActive" Grid.Row="5" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" Style="{DynamicResource FormCheckBoxStyle}"/>
         </Grid>
 
         <Grid Grid.Row="2" Margin="0,20,0,0">
@@ -70,12 +72,12 @@
             </Grid.ColumnDefinitions>
 
             <!-- Botão Voltar à esquerda -->
-            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Click="BtnBack_Click"/>
+            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" HorizontalAlignment="Left" Click="BtnBack_Click" Style="{DynamicResource FormButtonStyle}"/>
 
             <!-- Botões Cancelar e Salvar à direita -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
-                <Button x:Name="BtnSave" Content="Salvar" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
+                <Button x:Name="BtnCancel" Content="Cancelar" Margin="0,0,10,0" Click="BtnCancel_Click" Style="{DynamicResource FormButtonStyle}"/>
+                <Button x:Name="BtnSave" Content="Salvar" Click="BtnSave_Click" Style="{DynamicResource FormButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Grid>

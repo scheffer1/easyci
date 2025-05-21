@@ -8,8 +8,9 @@
         mc:Ignorable="d"
         Title="Criar Projeto CI" Height="550" Width="800"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
         Loaded="Window_Loaded">
-    <Grid Margin="20">
+    <Grid Margin="20" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,12 +19,12 @@
 
         <!-- Cabeçalho -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Criar Projeto de Integração Contínua" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock Text="Associe um repositório Git com um container Docker para criar um pipeline de integração contínua." TextWrapping="Wrap"/>
+            <TextBlock Text="Criar Projeto de Integração Contínua" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Associe um repositório Git com um container Docker para criar um pipeline de integração contínua." TextWrapping="Wrap" Foreground="{DynamicResource TextPrimaryBrush}"/>
         </StackPanel>
 
         <!-- Formulário -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="{DynamicResource BackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -39,50 +40,56 @@
             </Grid.RowDefinitions>
 
             <!-- Nome do Projeto -->
-            <Label Grid.Row="0" Grid.Column="0" Content="Nome do Projeto:" VerticalAlignment="Center" Margin="0,0,10,15"/>
-            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="0,0,0,15" Padding="5" Text="{Binding Name}"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Nome do Projeto:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Style="{DynamicResource FormTextBoxStyle}" Margin="0,0,0,15"/>
 
             <!-- Repositório Git -->
-            <Label Grid.Row="1" Grid.Column="0" Content="Repositório Git:" VerticalAlignment="Center" Margin="0,0,10,15"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Repositório Git:" Style="{DynamicResource FormLabelStyle}"/>
             <ComboBox x:Name="CmbGitRepository" Grid.Row="1" Grid.Column="1" Margin="0,0,0,15" Padding="5"
                       ItemsSource="{Binding GitRepositories}"
                       SelectedItem="{Binding SelectedGitRepository}"
-                      DisplayMemberPath="Name"/>
+                      DisplayMemberPath="Name"
+                      Background="{DynamicResource CardBackgroundBrush}"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"/>
 
             <!-- Container Docker -->
-            <Label Grid.Row="2" Grid.Column="0" Content="Container Docker:" VerticalAlignment="Center" Margin="0,0,10,15"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Container Docker:" Style="{DynamicResource FormLabelStyle}"/>
             <ComboBox x:Name="CmbDockerContainer" Grid.Row="2" Grid.Column="1" Margin="0,0,0,15" Padding="5"
                       ItemsSource="{Binding DockerContainers}"
                       SelectedItem="{Binding SelectedDockerContainer}"
-                      DisplayMemberPath="Name"/>
+                      DisplayMemberPath="Name"
+                      Background="{DynamicResource CardBackgroundBrush}"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"/>
 
             <!-- Arquivo Docker Compose -->
-            <Label Grid.Row="3" Grid.Column="0" Content="Arquivo Compose:" VerticalAlignment="Center" Margin="0,0,10,15"/>
-            <TextBox x:Name="TxtComposeFilePath" Grid.Row="3" Grid.Column="1" Margin="0,0,0,15" Padding="5" Text="{Binding ComposeFilePath}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Arquivo Compose:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtComposeFilePath" Grid.Row="3" Grid.Column="1" Text="{Binding ComposeFilePath}" Style="{DynamicResource FormTextBoxStyle}" Margin="0,0,0,15"/>
 
             <!-- Build Automático -->
-            <Label Grid.Row="4" Grid.Column="0" Content="Build Automático:" VerticalAlignment="Center" Margin="0,0,10,15"/>
-            <CheckBox x:Name="ChkAutoBuild" Grid.Row="4" Grid.Column="1" Content="Executar build automaticamente quando houver mudanças no repositório" IsChecked="{Binding AutoBuild}" VerticalAlignment="Center" Margin="0,0,0,15"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Build Automático:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkAutoBuild" Grid.Row="4" Grid.Column="1" Content="Executar build automaticamente quando houver mudanças no repositório" IsChecked="{Binding AutoBuild}" Style="{DynamicResource FormCheckBoxStyle}" Margin="0,0,0,15"/>
 
             <!-- Status -->
-            <Label Grid.Row="5" Grid.Column="0" Content="Status:" VerticalAlignment="Center" Margin="0,0,10,15"/>
-            <CheckBox x:Name="ChkIsActive" Grid.Row="5" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" VerticalAlignment="Center" Margin="0,0,0,15"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="Status:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkIsActive" Grid.Row="5" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" Style="{DynamicResource FormCheckBoxStyle}" Margin="0,0,0,15"/>
         </Grid>
 
         <!-- Botões -->
-        <Grid Grid.Row="2" Margin="0,20,0,0">
+        <Grid Grid.Row="2" Margin="0,20,0,0" Background="{DynamicResource BackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Botão Voltar à esquerda -->
-            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Click="BtnBack_Click"/>
+            <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" HorizontalAlignment="Left" Click="BtnBack_Click" Style="{DynamicResource FormButtonStyle}"/>
 
             <!-- Botões Cancelar e Salvar à direita -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
-                <Button x:Name="BtnSave" Content="Criar Projeto" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
+                <Button x:Name="BtnCancel" Content="Cancelar" Margin="0,0,10,0" Click="BtnCancel_Click" Style="{DynamicResource FormButtonStyle}"/>
+                <Button x:Name="BtnSave" Content="Criar Projeto" Click="BtnSave_Click" Style="{DynamicResource FormButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Grid>

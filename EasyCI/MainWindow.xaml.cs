@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using EasyCI.Themes;
 using EasyCI.Views;
 
 namespace EasyCI;
@@ -13,6 +14,27 @@ public partial class EasyCiMain : Window
     public EasyCiMain()
     {
         InitializeComponent();
+
+        // Atualizar o texto do botão de tema baseado no tema atual
+        UpdateThemeButtonText();
+
+        // Registrar para eventos de mudança de tema
+        ThemeManager.ThemeChanged += (s, theme) => UpdateThemeButtonText();
+    }
+
+    private void UpdateThemeButtonText()
+    {
+        // Atualizar o ícone e texto do botão de tema
+        if (ThemeManager.CurrentTheme == ThemeType.Light)
+        {
+            ((TextBlock)((StackPanel)BtnToggleTheme.Content).Children[0]).Text = "\uE793"; // Ícone de lua
+            ((TextBlock)((StackPanel)BtnToggleTheme.Content).Children[1]).Text = "Modo Escuro";
+        }
+        else
+        {
+            ((TextBlock)((StackPanel)BtnToggleTheme.Content).Children[0]).Text = "\uE706"; // Ícone de sol
+            ((TextBlock)((StackPanel)BtnToggleTheme.Content).Children[1]).Text = "Modo Claro";
+        }
     }
 
     #region Eventos de Navegação
@@ -26,9 +48,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarGit_Click(object sender, RoutedEventArgs e)
     {
-        // Abrir tela de listagem de repositórios Git
-        var gitRepositoryListView = new Views.GitRepositoryListView();
-        gitRepositoryListView.ShowDialog();
+        // Implementação futura: Abrir tela de listagem de repositórios Git
+        MessageBox.Show("Funcionalidade de listagem de repositórios Git será implementada em breve.",
+            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void BtnCadastrarDocker_Click(object sender, RoutedEventArgs e)
@@ -40,9 +62,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarDocker_Click(object sender, RoutedEventArgs e)
     {
-        // Abrir tela de listagem de containers Docker
-        var dockerContainerListView = new Views.DockerContainerListView();
-        dockerContainerListView.ShowDialog();
+        // Implementação futura: Abrir tela de listagem de containers Docker
+        MessageBox.Show("Funcionalidade de listagem de containers Docker será implementada em breve.",
+            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void BtnCriarProjeto_Click(object sender, RoutedEventArgs e)
@@ -54,9 +76,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarProjetos_Click(object sender, RoutedEventArgs e)
     {
-        // Abrir tela de listagem de projetos CI
-        var ciProjectListView = new Views.CIProjectListView();
-        ciProjectListView.ShowDialog();
+        // Implementação futura: Abrir tela de listagem de projetos CI
+        MessageBox.Show("Funcionalidade de listagem de projetos CI será implementada em breve.",
+            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void BtnMonitoramento_Click(object sender, RoutedEventArgs e)
@@ -64,6 +86,15 @@ public partial class EasyCiMain : Window
         // Abrir tela de monitoramento
         var monitoringView = new Views.MonitoringView();
         monitoringView.ShowDialog();
+    }
+
+    #endregion
+
+    #region Eventos de Tema
+
+    private void BtnToggleTheme_Click(object sender, RoutedEventArgs e)
+    {
+        ThemeManager.ToggleTheme();
     }
 
     #endregion

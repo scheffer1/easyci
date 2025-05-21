@@ -8,8 +8,9 @@
         mc:Ignorable="d"
         Title="Cadastro de Container Docker" Height="500" Width="800"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
         Loaded="Window_Loaded">
-    <Grid Margin="20">
+    <Grid Margin="20" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -17,11 +18,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Cadastro de Container Docker" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock Text="Preencha os dados do container Docker que será utilizado para execução dos builds." TextWrapping="Wrap"/>
+            <TextBlock Text="Cadastro de Container Docker" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Preencha os dados do container Docker que será utilizado para execução dos builds." TextWrapping="Wrap" Foreground="{DynamicResource TextPrimaryBrush}"/>
         </StackPanel>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="{DynamicResource BackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -41,41 +42,41 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Nome:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Name}"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Nome:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="1" Grid.Column="0" Content="Host:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtHost" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Host}"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Host:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtHost" Grid.Row="1" Grid.Column="1" Text="{Binding Host}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Porta:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtPort" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding Port}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Porta:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtPort" Grid.Row="2" Grid.Column="1" Text="{Binding Port}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="3" Grid.Column="0" Content="Versão da API:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtApiVersion" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding ApiVersion}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Versão da API:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtApiVersion" Grid.Row="3" Grid.Column="1" Text="{Binding ApiVersion}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Usar TLS:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <CheckBox x:Name="ChkUseTLS" Grid.Row="4" Grid.Column="1" Content="Habilitar TLS" IsChecked="{Binding UseTLS}" VerticalAlignment="Center" Margin="0,0,0,10"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Usar TLS:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkUseTLS" Grid.Row="4" Grid.Column="1" Content="Habilitar TLS" IsChecked="{Binding UseTLS}" Style="{DynamicResource FormCheckBoxStyle}"/>
 
-            <Label Grid.Row="5" Grid.Column="0" Content="Certificado:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="Certificado:" Style="{DynamicResource FormLabelStyle}"/>
             <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="TxtCertificatePath" Grid.Column="0" Padding="5" IsReadOnly="True" Text="{Binding CertificatePath}"/>
-                <Button x:Name="BtnSelectCertificate" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Padding="10,5" Click="BtnSelectCertificate_Click"/>
+                <TextBox x:Name="TxtCertificatePath" Grid.Column="0" IsReadOnly="True" Text="{Binding CertificatePath}" Style="{DynamicResource FormTextBoxStyle}" Margin="0"/>
+                <Button x:Name="BtnSelectCertificate" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Click="BtnSelectCertificate_Click" Style="{DynamicResource FormButtonStyle}"/>
             </Grid>
 
 
 
-            <Label Grid.Row="6" Grid.Column="0" Content="Workspace Remoto:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <TextBox x:Name="TxtRemoteWorkspacePath" Grid.Row="6" Grid.Column="1" Margin="0,0,0,10" Padding="5" Text="{Binding RemoteWorkspacePath}"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="Workspace Remoto:" Style="{DynamicResource FormLabelStyle}"/>
+            <TextBox x:Name="TxtRemoteWorkspacePath" Grid.Row="6" Grid.Column="1" Text="{Binding RemoteWorkspacePath}" Style="{DynamicResource FormTextBoxStyle}"/>
 
-            <Label Grid.Row="7" Grid.Column="0" Content="Status:" VerticalAlignment="Center" Margin="0,0,10,10"/>
-            <CheckBox x:Name="ChkIsActive" Grid.Row="7" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" VerticalAlignment="Center" Margin="0,0,0,10"/>
+            <Label Grid.Row="7" Grid.Column="0" Content="Status:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkIsActive" Grid.Row="7" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" Style="{DynamicResource FormCheckBoxStyle}"/>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="0,20,0,0">
+        <Grid Grid.Row="2" Margin="0,20,0,0" Background="{DynamicResource BackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -83,14 +84,14 @@
 
             <!-- Botão Voltar à esquerda -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button x:Name="BtnBack" Content="Voltar" Padding="15,8" Click="BtnBack_Click"/>
-                <Button x:Name="BtnTestConnection" Content="Testar Conexão" Padding="15,8" Margin="10,0,0,0" Click="BtnTestConnection_Click"/>
+                <Button x:Name="BtnBack" Content="Voltar" Click="BtnBack_Click" Style="{DynamicResource FormButtonStyle}"/>
+                <Button x:Name="BtnTestConnection" Content="Testar Conexão" Margin="10,0,0,0" Click="BtnTestConnection_Click" Style="{DynamicResource FormButtonStyle}"/>
             </StackPanel>
 
             <!-- Botões Cancelar e Salvar à direita -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnCancel" Content="Cancelar" Padding="15,8" Margin="0,0,10,0" Click="BtnCancel_Click"/>
-                <Button x:Name="BtnSave" Content="Salvar" Padding="15,8" Background="#0078D7" Foreground="White" Click="BtnSave_Click"/>
+                <Button x:Name="BtnCancel" Content="Cancelar" Margin="0,0,10,0" Click="BtnCancel_Click" Style="{DynamicResource FormButtonStyle}"/>
+                <Button x:Name="BtnSave" Content="Salvar" Click="BtnSave_Click" Style="{DynamicResource FormButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Grid>

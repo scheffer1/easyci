@@ -6,145 +6,129 @@
         xmlns:local="clr-namespace:EasyCI"
         mc:Ignorable="d"
         Title="EasyCI - Automação de Integração Contínua" Height="600" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}">
     <Window.Resources>
-        <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Padding" Value="15"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.2"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="CardButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#0078D7"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#005A9E"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <!-- Estes estilos serão substituídos pelos estilos dos temas -->
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Cabeçalho -->
-        <Border Background="#0078D7" Grid.Row="0">
-            <StackPanel Margin="20,15">
-                <TextBlock Text="EasyCI" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="Automação de Integração Contínua com Docker" FontSize="14" Foreground="White" Opacity="0.8"/>
-            </StackPanel>
+        <Border Background="#0078D7" Grid.Row="0" Height="80">
+            <Grid Background="#0078D7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="20,15">
+                    <TextBlock Text="EasyCI" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Automação de Integração Contínua com Docker" FontSize="14" Foreground="White" Opacity="0.8"/>
+                </StackPanel>
+
+                <!-- Botão de Alternar Tema -->
+                <Button x:Name="BtnToggleTheme" Grid.Column="1" Margin="0,0,20,0"
+                        Click="BtnToggleTheme_Click" VerticalAlignment="Center"
+                        Background="Transparent" BorderThickness="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE793;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Text="Alternar Tema" Margin="5,0,0,0"
+                                   Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </Border>
 
         <!-- Conteúdo Principal -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <Grid Background="#F5F5F5">
+            <Grid Background="{DynamicResource BackgroundBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Seção de Boas-vindas -->
-                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="20,20,20,10">
+                <Border Grid.Row="0" Style="{DynamicResource CardStyle}" Margin="20,20,20,10">
                     <StackPanel>
-                        <TextBlock Text="Bem-vindo ao EasyCI" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,15">
+                        <TextBlock Text="Bem-vindo ao EasyCI" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,15" Foreground="{DynamicResource TextPrimaryBrush}">
                             Esta aplicação permite automatizar processos de integração contínua, conectando seus repositórios Git
                             com containers Docker para execução de builds e testes automatizados.
                         </TextBlock>
-                        <TextBlock Text="Comece cadastrando seus repositórios Git e containers Docker." FontWeight="SemiBold"/>
+                        <TextBlock Text="Comece cadastrando seus repositórios Git e containers Docker." FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Cards de Funcionalidades -->
                 <UniformGrid Grid.Row="1" Columns="2" Margin="10,0,10,20">
                     <!-- Card de Repositórios Git -->
-                    <Border Style="{StaticResource CardStyle}">
+                    <Border Style="{DynamicResource CardStyle}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                <TextBlock Text="&#xE718;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Repositórios Git" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE718;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Repositórios Git" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                             </StackPanel>
-                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15">
+                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15" Foreground="{DynamicResource TextPrimaryBrush}">
                                 Cadastre e gerencie seus repositórios Git para monitoramento e automação de builds.
                             </TextBlock>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="BtnCadastrarGit" Content="Cadastrar Repositório" Style="{StaticResource CardButtonStyle}" Click="BtnCadastrarGit_Click"/>
-                                <Button x:Name="BtnListarGit" Content="Listar Repositórios" Style="{StaticResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarGit_Click"/>
+                                <Button x:Name="BtnCadastrarGit" Content="Cadastrar Repositório" Style="{DynamicResource CardButtonStyle}" Click="BtnCadastrarGit_Click"/>
+                                <Button x:Name="BtnListarGit" Content="Listar Repositórios" Style="{DynamicResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarGit_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
 
                     <!-- Card de Containers Docker -->
-                    <Border Style="{StaticResource CardStyle}">
+                    <Border Style="{DynamicResource CardStyle}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Containers Docker" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Containers Docker" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                             </StackPanel>
-                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15">
+                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15" Foreground="{DynamicResource TextPrimaryBrush}">
                                 Configure containers Docker para executar seus builds e testes automatizados.
                             </TextBlock>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="BtnCadastrarDocker" Content="Cadastrar Container" Style="{StaticResource CardButtonStyle}" Click="BtnCadastrarDocker_Click"/>
-                                <Button x:Name="BtnListarDocker" Content="Listar Containers" Style="{StaticResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarDocker_Click"/>
+                                <Button x:Name="BtnCadastrarDocker" Content="Cadastrar Container" Style="{DynamicResource CardButtonStyle}" Click="BtnCadastrarDocker_Click"/>
+                                <Button x:Name="BtnListarDocker" Content="Listar Containers" Style="{DynamicResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarDocker_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
 
                     <!-- Card de Projetos CI -->
-                    <Border Style="{StaticResource CardStyle}">
+                    <Border Style="{DynamicResource CardStyle}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Projetos CI" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Projetos CI" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                             </StackPanel>
-                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15">
+                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15" Foreground="{DynamicResource TextPrimaryBrush}">
                                 Associe repositórios Git com containers Docker para criar pipelines de integração contínua.
                             </TextBlock>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="BtnCriarProjeto" Content="Criar Projeto CI" Style="{StaticResource CardButtonStyle}" Click="BtnCriarProjeto_Click"/>
-                                <Button x:Name="BtnListarProjetos" Content="Listar Projetos" Style="{StaticResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarProjetos_Click"/>
+                                <Button x:Name="BtnCriarProjeto" Content="Criar Projeto CI" Style="{DynamicResource CardButtonStyle}" Click="BtnCriarProjeto_Click"/>
+                                <Button x:Name="BtnListarProjetos" Content="Listar Projetos" Style="{DynamicResource CardButtonStyle}" Margin="10,0,0,0" Click="BtnListarProjetos_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
 
                     <!-- Card de Monitoramento -->
-                    <Border Style="{StaticResource CardStyle}">
+                    <Border Style="{DynamicResource CardStyle}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Monitoramento" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Monitoramento" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                             </StackPanel>
-                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15">
+                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,15" Foreground="{DynamicResource TextPrimaryBrush}">
                                 Acompanhe o status dos seus projetos de integração contínua em tempo real.
                             </TextBlock>
-                            <Button x:Name="BtnMonitoramento" Content="Acessar Monitoramento" Style="{StaticResource CardButtonStyle}" Click="BtnMonitoramento_Click"/>
+                            <Button x:Name="BtnMonitoramento" Content="Acessar Monitoramento" Style="{DynamicResource CardButtonStyle}" Click="BtnMonitoramento_Click"/>
                         </StackPanel>
                     </Border>
                 </UniformGrid>

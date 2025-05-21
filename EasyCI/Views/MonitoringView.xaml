@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:EasyCI.Views"
         mc:Ignorable="d"
         Title="Monitoramento de Projetos CI" Height="600" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,8 +17,8 @@
 
         <!-- Cabeçalho -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Monitoramento de Projetos CI" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock Text="Acompanhe o status dos seus projetos de integração contínua em tempo real." TextWrapping="Wrap"/>
+            <TextBlock Text="Monitoramento de Projetos CI" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Acompanhe o status dos seus projetos de integração contínua em tempo real." TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}"/>
         </StackPanel>
 
         <!-- Lista de Projetos -->
@@ -35,35 +37,42 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Botão Voltar à esquerda -->
-                <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Margin="0,0,10,0" Click="BtnBack_Click"/>
+                <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Margin="0,0,10,0" Click="BtnBack_Click" Background="{DynamicResource BackgroundLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
 
                 <!-- Filtro de texto -->
-                <TextBox Grid.Column="1" Padding="5" Margin="0,0,10,0"/>
+                <TextBox Grid.Column="1" Padding="5" Margin="0,0,10,0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
 
                 <!-- Filtro de status -->
-                <ComboBox Grid.Column="2" Width="150" SelectedIndex="0">
-                    <ComboBoxItem Content="Todos os Status"/>
-                    <ComboBoxItem Content="Em Execução"/>
-                    <ComboBoxItem Content="Concluído"/>
-                    <ComboBoxItem Content="Falha"/>
-                    <ComboBoxItem Content="Não Iniciado"/>
+                <ComboBox Grid.Column="2" Width="150" SelectedIndex="0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}">
+                    <ComboBoxItem Content="Todos os Status" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <ComboBoxItem Content="Em Execução" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <ComboBoxItem Content="Concluído" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <ComboBoxItem Content="Falha" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <ComboBoxItem Content="Não Iniciado" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </ComboBox>
             </Grid>
 
             <!-- Tabela de Projetos -->
-            <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                      Background="{DynamicResource BackgroundBrush}"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"
+                      RowBackground="{DynamicResource CardBackgroundBrush}"
+                      AlternatingRowBackground="{DynamicResource BackgroundLightBrush}"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{DynamicResource BorderBrush}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nome do Projeto" Width="*"/>
-                    <DataGridTextColumn Header="Repositório Git" Width="*"/>
-                    <DataGridTextColumn Header="Container Docker" Width="*"/>
-                    <DataGridTextColumn Header="Status" Width="100"/>
-                    <DataGridTextColumn Header="Última Execução" Width="150"/>
+                    <DataGridTextColumn Header="Nome do Projeto" Width="*" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Repositório Git" Width="*" Binding="{Binding GitRepository.Name}"/>
+                    <DataGridTextColumn Header="Container Docker" Width="*" Binding="{Binding DockerContainer.Name}"/>
+                    <DataGridTextColumn Header="Status" Width="100" Binding="{Binding Status}"/>
+                    <DataGridTextColumn Header="Última Execução" Width="150" Binding="{Binding LastBuildDate, StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
                     <DataGridTemplateColumn Header="Ações" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="Iniciar" Margin="0,0,5,0" Padding="5,2"/>
-                                    <Button Content="Detalhes" Padding="5,2"/>
+                                    <Button Content="Iniciar" Margin="0,0,5,0" Padding="5,2" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextLightBrush}"/>
+                                    <Button Content="Detalhes" Padding="5,2" Background="{DynamicResource BackgroundLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
