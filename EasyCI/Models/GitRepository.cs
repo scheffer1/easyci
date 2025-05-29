@@ -13,6 +13,7 @@ namespace EasyCI.Models
         public string Branch { get; set; } = "main";
         public string SshKeyPath { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public DateTime DateAdded { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
     }

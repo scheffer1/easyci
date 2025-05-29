@@ -5,28 +5,107 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyCI"
         mc:Ignorable="d"
-        Title="EasyCI - Automação de Integração Contínua" Height="600" Width="1000"
+        Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource BackgroundBrush}">
+        Background="{DynamicResource BackgroundBrush}"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        AllowsTransparency="True"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource BorderBrush}">
     <Window.Resources>
-        <!-- Estes estilos serão substituídos pelos estilos dos temas -->
+        <Style x:Key="WindowButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource WindowButtonHoverBrush}" TargetName="border"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource WindowButtonPressedBrush}" TargetName="border"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#F1707A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Barra de título personalizada -->
+        <Border x:Name="TitleBar" Grid.Row="0" Background="{DynamicResource PrimaryBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="EasyCI - Automação de Integração Contínua"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           FontSize="12"/>
+
+                <Button x:Name="BtnMinimize"
+                        Grid.Column="1"
+                        Style="{StaticResource WindowButtonStyle}"
+                        Content="&#xE921;"
+                        Click="BtnMinimize_Click"/>
+
+                <Button x:Name="BtnMaximize"
+                        Grid.Column="2"
+                        Style="{StaticResource WindowButtonStyle}"
+                        Content="&#xE922;"
+                        Click="BtnMaximize_Click"/>
+
+                <Button x:Name="BtnClose"
+                        Grid.Column="3"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Content="&#xE8BB;"
+                        Click="BtnClose_Click"/>
+            </Grid>
+        </Border>
+
         <!-- Cabeçalho -->
-        <Border Background="#0078D7" Grid.Row="0" Height="80">
-            <Grid Background="#0078D7">
+        <Border Background="{DynamicResource PrimaryBrush}" Grid.Row="1" Height="70">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Margin="20,15">
+                <StackPanel Grid.Column="0" Margin="20,10">
                     <TextBlock Text="EasyCI" FontSize="24" FontWeight="Bold" Foreground="White"/>
                     <TextBlock Text="Automação de Integração Contínua com Docker" FontSize="14" Foreground="White" Opacity="0.8"/>
                 </StackPanel>
@@ -46,7 +125,7 @@
         </Border>
 
         <!-- Conteúdo Principal -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <Grid Background="{DynamicResource BackgroundBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

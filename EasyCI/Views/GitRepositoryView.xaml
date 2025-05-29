@@ -35,6 +35,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -50,9 +51,12 @@
             <Label Grid.Row="3" Grid.Column="0" Content="Usuário:" Style="{DynamicResource FormLabelStyle}"/>
             <TextBox x:Name="TxtUsername" Grid.Row="3" Grid.Column="1" Text="{Binding Username}" Style="{DynamicResource FormTextBoxStyle}"/>
 
+            <Label Grid.Row="4" Grid.Column="0" Content="Senha:" Style="{DynamicResource FormLabelStyle}"/>
+            <PasswordBox x:Name="TxtPassword" Grid.Row="4" Grid.Column="1" Style="{DynamicResource FormPasswordBoxStyle}"/>
+
             <!-- Chave SSH -->
-            <Label Grid.Row="4" Grid.Column="0" Content="Chave SSH:" Style="{DynamicResource FormLabelStyle}"/>
-            <Grid Grid.Row="4" Grid.Column="1" Margin="0,0,0,10">
+            <Label Grid.Row="5" Grid.Column="0" Content="Chave SSH:" Style="{DynamicResource FormLabelStyle}"/>
+            <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -61,8 +65,8 @@
                 <Button x:Name="BtnSelectSshKey" Grid.Column="1" Content="Selecionar" Margin="10,0,0,0" Click="BtnSelectSshKey_Click" Style="{DynamicResource FormButtonStyle}"/>
             </Grid>
 
-            <Label Grid.Row="5" Grid.Column="0" Content="Status:" Style="{DynamicResource FormLabelStyle}"/>
-            <CheckBox x:Name="ChkIsActive" Grid.Row="5" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" Style="{DynamicResource FormCheckBoxStyle}"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="Status:" Style="{DynamicResource FormLabelStyle}"/>
+            <CheckBox x:Name="ChkIsActive" Grid.Row="6" Grid.Column="1" Content="Ativo" IsChecked="{Binding IsActive}" Style="{DynamicResource FormCheckBoxStyle}"/>
         </Grid>
 
         <Grid Grid.Row="2" Margin="0,20,0,0">

@@ -31,6 +31,10 @@
     <Color x:Key="ErrorColor">#F44336</Color>
     <Color x:Key="InfoColor">#2196F3</Color>
 
+    <!-- Cores para Barra de Título Personalizada -->
+    <Color x:Key="WindowButtonHoverColor">#404040</Color>
+    <Color x:Key="WindowButtonPressedColor">#303030</Color>
+
     <!-- Brushes Principais -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
@@ -60,6 +64,10 @@
     <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
     <SolidColorBrush x:Key="InfoBrush" Color="{StaticResource InfoColor}"/>
+
+    <!-- Brushes para Barra de Título Personalizada -->
+    <SolidColorBrush x:Key="WindowButtonHoverBrush" Color="{StaticResource WindowButtonHoverColor}"/>
+    <SolidColorBrush x:Key="WindowButtonPressedBrush" Color="{StaticResource WindowButtonPressedColor}"/>
 
     <!-- Estilos de Controles -->
     <Style x:Key="CardStyle" TargetType="Border">
@@ -118,6 +126,14 @@
         <Setter Property="CaretBrush" Value="{DynamicResource TextPrimaryBrush}"/>
     </Style>
 
+    <!-- Estilos para PasswordBox -->
+    <Style TargetType="PasswordBox">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource TextPrimaryBrush}"/>
+    </Style>
+
     <!-- Estilos para ComboBox -->
     <Style TargetType="ComboBox">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
@@ -134,6 +150,48 @@
     <!-- Estilos para CheckBox -->
     <Style TargetType="CheckBox">
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+    </Style>
+
+    <!-- Estilos para Button -->
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextLightBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{DynamicResource BackgroundLightBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextDisabledBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Estilos para StatusBar -->
+    <Style TargetType="StatusBar">
+        <Setter Property="Background" Value="{DynamicResource BackgroundLightBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="0,1,0,0"/>
     </Style>
 
     <!-- Estilos para DataGrid -->
@@ -193,6 +251,14 @@
     </Style>
 
     <Style x:Key="FormTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <Style x:Key="FormPasswordBoxStyle" TargetType="PasswordBox">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>

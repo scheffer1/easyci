@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using EasyCI.Themes;
 using EasyCI.Views;
 
@@ -20,6 +21,22 @@ public partial class EasyCiMain : Window
 
         // Registrar para eventos de mudança de tema
         ThemeManager.ThemeChanged += (s, theme) => UpdateThemeButtonText();
+
+        // Atualizar o ícone de maximizar/restaurar quando o estado da janela mudar
+        StateChanged += (s, e) => UpdateMaximizeRestoreButton();
+    }
+
+    private void UpdateMaximizeRestoreButton()
+    {
+        // Atualizar o ícone do botão maximizar/restaurar com base no estado da janela
+        if (WindowState == WindowState.Maximized)
+        {
+            BtnMaximize.Content = "\uE923"; // Ícone de restaurar
+        }
+        else
+        {
+            BtnMaximize.Content = "\uE922"; // Ícone de maximizar
+        }
     }
 
     private void UpdateThemeButtonText()
@@ -48,9 +65,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarGit_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de repositórios Git
-        MessageBox.Show("Funcionalidade de listagem de repositórios Git será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de repositórios Git
+        var gitRepositoryListView = new Views.GitRepositoryListView();
+        gitRepositoryListView.ShowDialog();
     }
 
     private void BtnCadastrarDocker_Click(object sender, RoutedEventArgs e)
@@ -62,9 +79,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarDocker_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de containers Docker
-        MessageBox.Show("Funcionalidade de listagem de containers Docker será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de containers Docker
+        var dockerContainerListView = new Views.DockerContainerListView();
+        dockerContainerListView.ShowDialog();
     }
 
     private void BtnCriarProjeto_Click(object sender, RoutedEventArgs e)
@@ -76,9 +93,9 @@ public partial class EasyCiMain : Window
 
     private void BtnListarProjetos_Click(object sender, RoutedEventArgs e)
     {
-        // Implementação futura: Abrir tela de listagem de projetos CI
-        MessageBox.Show("Funcionalidade de listagem de projetos CI será implementada em breve.",
-            "Funcionalidade em Desenvolvimento", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Abrir tela de listagem de projetos CI
+        var ciProjectListView = new Views.CIProjectListView();
+        ciProjectListView.ShowDialog();
     }
 
     private void BtnMonitoramento_Click(object sender, RoutedEventArgs e)
@@ -95,6 +112,51 @@ public partial class EasyCiMain : Window
     private void BtnToggleTheme_Click(object sender, RoutedEventArgs e)
     {
         ThemeManager.ToggleTheme();
+    }
+
+    #endregion
+
+    #region Eventos da Barra de Título
+
+    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        // Permitir arrastar a janela quando o usuário clicar na barra de título
+        if (e.ClickCount == 1)
+        {
+            DragMove();
+        }
+        else if (e.ClickCount == 2)
+        {
+            // Alternar entre maximizado e normal com duplo clique
+            ToggleMaximize();
+        }
+    }
+
+    private void ToggleMaximize()
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            WindowState = WindowState.Normal;
+        }
+        else
+        {
+            WindowState = WindowState.Maximized;
+        }
+    }
+
+    private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void BtnMaximize_Click(object sender, RoutedEventArgs e)
+    {
+        ToggleMaximize();
+    }
+
+    private void BtnClose_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 
     #endregion

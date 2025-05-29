@@ -107,6 +107,19 @@ namespace EasyCI.ViewModels
             }
         }
 
+        public string Password
+        {
+            get => _repository.Password;
+            set
+            {
+                if (_repository.Password != value)
+                {
+                    _repository.Password = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool IsActive
         {
             get => _repository.IsActive;

@@ -31,6 +31,9 @@ namespace EasyCI.Views
                 _viewModel = new GitRepositoryViewModel();
                 DataContext = _viewModel;
             }
+
+            // Configurar a senha no PasswordBox
+            TxtPassword.Password = _viewModel.Password;
         }
 
         private void BtnSelectSshKey_Click(object sender, RoutedEventArgs e)
@@ -54,6 +57,9 @@ namespace EasyCI.Views
                 TxtUrl.Focus();
                 return;
             }
+
+            // Capturar a senha do PasswordBox
+            _viewModel.Password = TxtPassword.Password;
 
             // Salvar o repositório
             if (await _viewModel.SaveAsync())

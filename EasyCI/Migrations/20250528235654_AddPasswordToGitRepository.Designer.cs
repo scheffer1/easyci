@@ -3,6 +3,7 @@ using System;
 using EasyCI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyCI.Migrations
 {
     [DbContext(typeof(EasyCIContext))]
-    partial class EasyCIContextModelSnapshot : ModelSnapshot
+    [Migration("20250528235654_AddPasswordToGitRepository")]
+    partial class AddPasswordToGitRepository
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0-preview.1.24081.2");
@@ -59,7 +62,7 @@ namespace EasyCI.Migrations
 
                     b.HasIndex("GitRepositoryId");
 
-                    b.ToTable("CIProjects", (string)null);
+                    b.ToTable("CIProjects");
                 });
 
             modelBuilder.Entity("EasyCI.Models.DockerContainer", b =>
@@ -105,7 +108,7 @@ namespace EasyCI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DockerContainers", (string)null);
+                    b.ToTable("DockerContainers");
                 });
 
             modelBuilder.Entity("EasyCI.Models.GitRepository", b =>
@@ -146,7 +149,7 @@ namespace EasyCI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GitRepositories", (string)null);
+                    b.ToTable("GitRepositories");
                 });
 
             modelBuilder.Entity("EasyCI.Models.CIProject", b =>

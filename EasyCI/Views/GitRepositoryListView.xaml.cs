@@ -1,5 +1,6 @@
 using EasyCI.Models;
 using EasyCI.Services;
+using EasyCI.Themes;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -21,6 +22,15 @@ namespace EasyCI.Views
             InitializeComponent();
             _gitRepositoryService = new GitRepositoryService();
             _repositories = new ObservableCollection<GitRepository>();
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
+        }
+
+        private void OnThemeChanged(object? sender, ThemeType theme)
+        {
+            // Forçar atualização dos estilos quando o tema mudar
+            InvalidateVisual();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)

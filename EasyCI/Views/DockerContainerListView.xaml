@@ -44,10 +44,9 @@
         <!-- Lista de Containers -->
         <DataGrid x:Name="DgContainers" Grid.Row="2" AutoGenerateColumns="False"
                   IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
-                  BorderThickness="1" BorderBrush="#DDDDDD"
                   CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserReorderColumns="True" CanUserResizeColumns="True"
-                  CanUserSortColumns="True" AlternatingRowBackground="#F5F5F5"
+                  CanUserSortColumns="True"
                   RowHeaderWidth="0" MouseDoubleClick="DgContainers_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>

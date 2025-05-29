@@ -14,6 +14,7 @@ namespace EasyCI.ViewModels
         private readonly CIProjectService _ciProjectService;
         private readonly GitRepositoryService _gitRepositoryService;
         private readonly DockerContainerService _dockerContainerService;
+        private readonly BuildService _buildService;
         private CIProject _project;
         private bool _isNewProject;
         private ObservableCollection<GitRepository> _gitRepositories;
@@ -26,6 +27,7 @@ namespace EasyCI.ViewModels
             _ciProjectService = new CIProjectService();
             _gitRepositoryService = new GitRepositoryService();
             _dockerContainerService = new DockerContainerService();
+            _buildService = new BuildService();
             _project = new CIProject();
             _isNewProject = true;
             _gitRepositories = new ObservableCollection<GitRepository>();
@@ -38,15 +40,16 @@ namespace EasyCI.ViewModels
             _ciProjectService = new CIProjectService();
             _gitRepositoryService = new GitRepositoryService();
             _dockerContainerService = new DockerContainerService();
+            _buildService = new BuildService();
             _project = project;
             _isNewProject = false;
             _gitRepositories = new ObservableCollection<GitRepository>();
             _dockerContainers = new ObservableCollection<DockerContainer>();
             LoadRepositoriesAndContainers();
-            
+
             if (project.GitRepository != null)
                 SelectedGitRepository = project.GitRepository;
-            
+
             if (project.DockerContainer != null)
                 SelectedDockerContainer = project.DockerContainer;
         }
@@ -208,9 +211,20 @@ namespace EasyCI.ViewModels
 
                 if (_isNewProject)
                 {
+                    _project.DockerContainer = null;
+                    _project.GitRepository = null;
+
                     _project.DateCreated = DateTime.Now;
-                    _project.Status = "Não iniciado";
+                    _project.Status = "Aguardando início do build...";
                     await _ciProjectService.AddAsync(_project);
+
+                    // Iniciar o processo de build automaticamente após salvar
+                    var buildResult = await _buildService.ExecuteBuildAsync(_project.Id);
+                    if (!buildResult.Success)
+                    {
+                        MessageBox.Show($"Projeto salvo, mas houve um problema ao iniciar o build: {buildResult.Message}",
+                            "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
                 else
                 {

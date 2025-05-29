@@ -46,10 +46,9 @@
         <!-- Lista de Projetos -->
         <DataGrid x:Name="DgProjects" Grid.Row="2" AutoGenerateColumns="False"
                   IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
-                  BorderThickness="1" BorderBrush="#DDDDDD"
                   CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserReorderColumns="True" CanUserResizeColumns="True"
-                  CanUserSortColumns="True" AlternatingRowBackground="#F5F5F5"
+                  CanUserSortColumns="True"
                   RowHeaderWidth="0" MouseDoubleClick="DgProjects_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
