@@ -56,8 +56,21 @@ namespace EasyCI.Themes
             // Salvar a preferência do usuário
             UserSettingsService.SaveThemePreference(theme);
 
+            // Forçar atualização de todas as janelas abertas
+            ForceUpdateAllWindows();
+
             // Notificar sobre a mudança de tema
             ThemeChanged?.Invoke(null, theme);
+        }
+
+        private static void ForceUpdateAllWindows()
+        {
+            // Forçar atualização de todas as janelas abertas
+            foreach (Window window in Application.Current.Windows)
+            {
+                window.InvalidateVisual();
+                window.UpdateLayout();
+            }
         }
     }
 }

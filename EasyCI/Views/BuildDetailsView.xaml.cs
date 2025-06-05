@@ -1,5 +1,6 @@
 using EasyCI.Models;
 using EasyCI.Services;
+using EasyCI.Themes;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -23,6 +24,9 @@ namespace EasyCI.Views
             _ciProjectService = new CIProjectService();
             _buildService = new BuildService();
             _projectId = projectId;
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -142,6 +146,12 @@ namespace EasyCI.Views
         {
             // Voltar para a tela anterior (mesma ação do Fechar)
             Close();
+        }
+
+        private void OnThemeChanged(object? sender, ThemeType theme)
+        {
+            // Forçar atualização dos estilos quando o tema mudar
+            InvalidateVisual();
         }
     }
 }

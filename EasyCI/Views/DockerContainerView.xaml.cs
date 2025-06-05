@@ -1,6 +1,7 @@
 using EasyCI.Models;
 using EasyCI.Services;
 using EasyCI.ViewModels;
+using EasyCI.Themes;
 using Microsoft.Win32;
 using System.Windows;
 
@@ -14,6 +15,9 @@ namespace EasyCI.Views
         public DockerContainerView()
         {
             InitializeComponent();
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         public DockerContainerView(DockerContainer container)
@@ -21,6 +25,9 @@ namespace EasyCI.Views
             InitializeComponent();
             _viewModel = new DockerContainerViewModel(container);
             DataContext = _viewModel;
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -136,6 +143,12 @@ namespace EasyCI.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void OnThemeChanged(object? sender, ThemeType theme)
+        {
+            // Forçar atualização dos estilos quando o tema mudar
+            InvalidateVisual();
         }
     }
 }

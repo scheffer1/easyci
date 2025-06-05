@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="Repositórios Git" Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
         Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -18,8 +20,8 @@
 
         <!-- Cabeçalho -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Repositórios Git" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock Text="Gerencie os repositórios Git cadastrados no sistema." TextWrapping="Wrap"/>
+            <TextBlock Text="Repositórios Git" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Gerencie os repositórios Git cadastrados no sistema." TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}"/>
         </StackPanel>
 
         <!-- Barra de Ferramentas -->
@@ -61,7 +63,7 @@
 
         <!-- Barra de Status -->
         <StatusBar Grid.Row="3" Height="30" Margin="0,10,0,0">
-            <TextBlock x:Name="TxtStatus" Text="Pronto"/>
+            <TextBlock x:Name="TxtStatus" Text="Pronto" Foreground="{DynamicResource TextPrimaryBrush}"/>
         </StatusBar>
     </Grid>
 </Window>

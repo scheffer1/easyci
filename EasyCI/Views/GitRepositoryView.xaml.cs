@@ -1,5 +1,6 @@
 using EasyCI.Models;
 using EasyCI.ViewModels;
+using EasyCI.Themes;
 using Microsoft.Win32;
 using System.Windows;
 
@@ -15,6 +16,9 @@ namespace EasyCI.Views
         public GitRepositoryView()
         {
             InitializeComponent();
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         public GitRepositoryView(GitRepository repository)
@@ -22,6 +26,9 @@ namespace EasyCI.Views
             InitializeComponent();
             _viewModel = new GitRepositoryViewModel(repository);
             DataContext = _viewModel;
+
+            // Registrar para eventos de mudança de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +88,12 @@ namespace EasyCI.Views
             // Voltar para a tela anterior (mesma ação do Cancelar)
             DialogResult = false;
             Close();
+        }
+
+        private void OnThemeChanged(object? sender, ThemeType theme)
+        {
+            // Forçar atualização dos estilos quando o tema mudar
+            InvalidateVisual();
         }
     }
 }

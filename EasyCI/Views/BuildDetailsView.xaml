@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="Detalhes do Build" Height="600" Width="900"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
         Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -18,8 +20,8 @@
 
         <!-- Cabeçalho -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock x:Name="TxtTitle" Text="Detalhes do Build" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBlock x:Name="TxtDescription" Text="Informações detalhadas sobre o build do projeto." TextWrapping="Wrap"/>
+            <TextBlock x:Name="TxtTitle" Text="Detalhes do Build" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtDescription" Text="Informações detalhadas sobre o build do projeto." TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}"/>
         </StackPanel>
 
         <!-- Informações do Projeto -->
@@ -37,25 +39,25 @@
             </Grid.RowDefinitions>
 
             <!-- Linha 1 -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Projeto:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtProjectName" Grid.Row="0" Grid.Column="1" Text="-" Margin="0,0,20,10"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Projeto:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtProjectName" Grid.Row="0" Grid.Column="1" Text="-" Margin="0,0,20,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Status:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtStatus" Grid.Row="0" Grid.Column="3" Text="-" Margin="0,0,0,10"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Status:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtStatus" Grid.Row="0" Grid.Column="3" Text="-" Margin="0,0,0,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
 
             <!-- Linha 2 -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Repositório:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtRepository" Grid.Row="1" Grid.Column="1" Text="-" Margin="0,0,20,10"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Repositório:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtRepository" Grid.Row="1" Grid.Column="1" Text="-" Margin="0,0,20,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="Container:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtContainer" Grid.Row="1" Grid.Column="3" Text="-" Margin="0,0,0,10"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="Container:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtContainer" Grid.Row="1" Grid.Column="3" Text="-" Margin="0,0,0,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
 
             <!-- Linha 3 -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Branch:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtBranch" Grid.Row="2" Grid.Column="1" Text="-" Margin="0,0,20,10"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Branch:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtBranch" Grid.Row="2" Grid.Column="1" Text="-" Margin="0,0,20,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="2" Text="Último Build:" FontWeight="SemiBold" Margin="0,0,10,10"/>
-            <TextBlock x:Name="TxtLastBuild" Grid.Row="2" Grid.Column="3" Text="-" Margin="0,0,0,10"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="Último Build:" FontWeight="SemiBold" Margin="0,0,10,10" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="TxtLastBuild" Grid.Row="2" Grid.Column="3" Text="-" Margin="0,0,0,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
         </Grid>
 
         <!-- Logs -->
@@ -68,7 +70,10 @@
 
                 <TextBox x:Name="TxtLogs" Grid.Row="0" IsReadOnly="True" TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                         FontFamily="Consolas" Padding="10"/>
+                         FontFamily="Consolas" Padding="10"
+                         Background="{DynamicResource CardBackgroundBrush}"
+                         Foreground="{DynamicResource TextPrimaryBrush}"
+                         BorderBrush="{DynamicResource BorderBrush}"/>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                     <Button x:Name="BtnClearLogs" Content="Limpar Logs" Padding="10,5" Margin="0,0,10,0" Click="BtnClearLogs_Click"/>
