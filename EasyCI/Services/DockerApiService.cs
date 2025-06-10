@@ -200,8 +200,8 @@ namespace EasyCI.Services
                 // Usar uma imagem que tenha docker-compose instalado
                 var client = GetOrCreateClient(container);
 
-                // Usar imagem alpine com docker-compose
-                var composeResult = await EnsureImageAsync(client, "docker/compose:latest");
+                // Usar imagem Alpine com docker-compose instalado
+                var composeResult = await EnsureImageAsync(client, "alpine:latest");
                 if (!composeResult.Success)
                 {
                     return (false, composeResult.Message);
@@ -214,14 +214,18 @@ namespace EasyCI.Services
                 var findComposeResult = await FindDockerComposeFileAsync(client, workingDirectory);
 
                 string composeCommand;
+                string composeFile = "";
+
                 if (findComposeResult.Success)
                 {
                     // Usar o arquivo encontrado
-                    composeCommand = $"docker-compose -f {findComposeResult.Message} up -d";
+                    composeFile = findComposeResult.Message;
+                    composeCommand = $"docker-compose -f {composeFile} up -d";
                 }
                 else if (!string.IsNullOrEmpty(composeFilePath))
                 {
                     // Usar o arquivo especificado
+                    composeFile = composeFilePath;
                     composeCommand = $"docker-compose -f {composeFilePath} up -d";
                 }
                 else
@@ -230,11 +234,24 @@ namespace EasyCI.Services
                     composeCommand = "docker-compose up -d";
                 }
 
+                // Verificar se o arquivo existe antes de tentar executar
+                if (!string.IsNullOrEmpty(composeFile))
+                {
+                    var fileCheckResult = await CheckFileExistsAsync(client, workingDirectory, composeFile);
+                    if (!fileCheckResult.Success)
+                    {
+                        return (false, $"Arquivo docker-compose não encontrado: {composeFile}. {fileCheckResult.Message}");
+                    }
+                }
+
+                // Instalar docker-compose e executar o comando
+                var installAndRunCommand = $"apk add --no-cache docker-compose && {composeCommand}";
+
                 var createResponse = await client.Containers.CreateContainerAsync(new CreateContainerParameters
                 {
-                    Image = "docker/compose:latest",
+                    Image = "alpine:latest",
                     WorkingDir = workingDirectory,
-                    Cmd = new[] { "/bin/sh", "-c", composeCommand },
+                    Cmd = new[] { "sh", "-c", installAndRunCommand },
                     HostConfig = new HostConfig
                     {
                         Binds = new[]
@@ -252,17 +269,21 @@ namespace EasyCI.Services
                     createResponse.ID,true,
                     new ContainerLogsParameters { ShowStdout = true, ShowStderr = true });
 
-                await client.Containers.RemoveContainerAsync(createResponse.ID, new ContainerRemoveParameters());
-
                 var (stdout, stderr) = await logs.ReadOutputToEndAsync(cancellationToken: CancellationToken.None);
 
-                if (waitResponse.StatusCode == 0)
+                // Obter o código de saída real do container
+                var inspectResponse = await client.Containers.InspectContainerAsync(createResponse.ID);
+                var exitCode = inspectResponse.State.ExitCode;
+
+                await client.Containers.RemoveContainerAsync(createResponse.ID, new ContainerRemoveParameters());
+
+                if (exitCode == 0)
                 {
                     return (true, $"Docker Compose executado com sucesso. Output: {stdout}");
                 }
                 else
                 {
-                    return (false, $"Falha ao executar Docker Compose. Código de status: {waitResponse.StatusCode}. Directory listing: {listResult}. Logs: {stdout} {stderr}");
+                    return (false, $"Falha ao executar Docker Compose. Código de saída: {exitCode}. Directory listing: {listResult}. Logs: {stdout} {stderr}");
                 }
             }
             catch (Exception ex)
@@ -287,66 +308,89 @@ namespace EasyCI.Services
             {
                 var client = GetOrCreateClient(container);
 
-                // Garantir que a imagem Alpine/Git está disponível
-                var gitResult = await EnsureImageAsync(client, "alpine/git");
-                if (!gitResult.Success)
-                {
-                    return (false, gitResult.Message);
-                }
+                // Determinar se é um comando git ou shell genérico
+                bool isGitCommand = command.Contains("git ") || command.Contains("clone") || command.Contains("pull") || command.Contains("push");
+                bool isShellCommand = command.StartsWith("/bin/sh");
 
-                // Determinar se o comando precisa de shell ou pode ser executado diretamente
+                string imageName;
                 string[] cmdArray;
-                if (command.StartsWith("/bin/sh"))
+
+                if (isShellCommand || !isGitCommand)
                 {
-                    // Comando complexo que precisa de shell
-                    cmdArray = new[] { "/bin/sh", "-c", command.Substring(11) }; // Remove "/bin/sh -c " do início
+                    // Para comandos shell genéricos, usar Alpine padrão
+                    var alpineResult = await EnsureImageAsync(client, "alpine:latest");
+                    if (!alpineResult.Success)
+                    {
+                        return (false, alpineResult.Message);
+                    }
+                    imageName = "alpine:latest";
+
+                    if (command.StartsWith("/bin/sh -c "))
+                    {
+                        // Extrair o comando real entre aspas
+                        var startIndex = command.IndexOf('"') + 1;
+                        var endIndex = command.LastIndexOf('"');
+                        if (startIndex > 0 && endIndex > startIndex)
+                        {
+                            var actualCommand = command.Substring(startIndex, endIndex - startIndex);
+                            cmdArray = new[] { "sh", "-c", actualCommand };
+                        }
+                        else
+                        {
+                            // Fallback: remover apenas "/bin/sh -c "
+                            cmdArray = new[] { "sh", "-c", command.Substring(12) };
+                        }
+                    }
+                    else
+                    {
+                        cmdArray = new[] { "sh", "-c", command };
+                    }
                 }
                 else
                 {
-                    // Comando git simples - dividir em argumentos
+                    // Para comandos git, usar alpine/git
+                    var gitResult = await EnsureImageAsync(client, "alpine/git");
+                    if (!gitResult.Success)
+                    {
+                        return (false, gitResult.Message);
+                    }
+                    imageName = "alpine/git";
                     cmdArray = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 }
 
                 var createResponse = await client.Containers.CreateContainerAsync(new CreateContainerParameters
                 {
-                    Image = "alpine/git",
+                    Image = imageName,
                     WorkingDir = workingDirectory,
                     Cmd = cmdArray,
                     HostConfig = new HostConfig
                     {
-                        // Adicionar bind mount para persistir os dados
                         Binds = new[] { $"{workingDirectory}:{workingDirectory}" }
                     }
                 });
 
                 await client.Containers.StartContainerAsync(createResponse.ID, null);
 
-                // Para comandos Git (especialmente clone), aguardar mais tempo
                 bool isGitClone = command.Contains("clone");
 
                 if (isGitClone)
                 {
-                    // Para git clone, aguardar de forma diferente
                     await WaitForGitCloneCompletion(client, createResponse.ID);
                 }
                 else
                 {
-                    // Para outros comandos, aguardar normalmente
                     await client.Containers.WaitContainerAsync(createResponse.ID);
                 }
 
-                // Capturar logs antes de remover o container
                 var logs = await client.Containers.GetContainerLogsAsync(
                     createResponse.ID,true,
                     new ContainerLogsParameters { ShowStdout = true, ShowStderr = true });
 
                 var (stdout, stderr) = await logs.ReadOutputToEndAsync(cancellationToken: CancellationToken.None);
 
-                // Verificar o status final do container
                 var inspectResponse = await client.Containers.InspectContainerAsync(createResponse.ID);
                 var exitCode = inspectResponse.State.ExitCode;
 
-                // Remover o container apenas após capturar os logs
                 await client.Containers.RemoveContainerAsync(createResponse.ID, new ContainerRemoveParameters());
 
                 if (exitCode == 0)
@@ -408,7 +452,7 @@ namespace EasyCI.Services
         }
 
         /// <summary>
-        /// Procura por arquivos docker-compose no diretório
+        /// Procura por arquivos docker-compose no diretório, priorizando a raiz
         /// </summary>
         private async Task<(bool Success, string Message)> FindDockerComposeFileAsync(DockerClient client, string directory)
         {
@@ -421,11 +465,24 @@ namespace EasyCI.Services
                     return (false, $"Erro ao garantir imagem Alpine: {alpineResult.Message}");
                 }
 
+                // Primeiro, verificar se existe na raiz (prioridade máxima)
+                var rootFiles = new[] { "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml" };
+
+                foreach (var fileName in rootFiles)
+                {
+                    var checkResult = await CheckFileExistsAsync(client, directory, fileName);
+                    if (checkResult.Success)
+                    {
+                        return (true, fileName);
+                    }
+                }
+
+                // Se não encontrou na raiz, procurar em subdiretórios
                 var createResponse = await client.Containers.CreateContainerAsync(new CreateContainerParameters
                 {
                     Image = "alpine:latest",
                     WorkingDir = directory,
-                    Cmd = new[] { "sh", "-c", "find . -name 'docker-compose.yml' -o -name 'docker-compose.yaml' -o -name 'compose.yml' -o -name 'compose.yaml' | head -1" },
+                    Cmd = new[] { "sh", "-c", "find . -maxdepth 2 -name 'docker-compose.yml' -o -name 'docker-compose.yaml' -o -name 'compose.yml' -o -name 'compose.yaml' | head -1" },
                     HostConfig = new HostConfig
                     {
                         Binds = new[] { $"{directory}:{directory}" }
@@ -456,6 +513,58 @@ namespace EasyCI.Services
             catch (Exception ex)
             {
                 return (false, $"Erro ao procurar arquivo docker-compose: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Verifica se um arquivo específico existe no diretório
+        /// </summary>
+        private async Task<(bool Success, string Message)> CheckFileExistsAsync(DockerClient client, string directory, string fileName)
+        {
+            try
+            {
+                // Usar imagem Alpine padrão para comandos shell
+                var alpineResult = await EnsureImageAsync(client, "alpine:latest");
+                if (!alpineResult.Success)
+                {
+                    return (false, $"Erro ao garantir imagem Alpine: {alpineResult.Message}");
+                }
+
+                var createResponse = await client.Containers.CreateContainerAsync(new CreateContainerParameters
+                {
+                    Image = "alpine:latest",
+                    WorkingDir = directory,
+                    Cmd = new[] { "ls", "-la", fileName },
+                    HostConfig = new HostConfig
+                    {
+                        Binds = new[] { $"{directory}:{directory}" }
+                    }
+                });
+
+                await client.Containers.StartContainerAsync(createResponse.ID, null);
+                var waitResponse = await client.Containers.WaitContainerAsync(createResponse.ID);
+
+                var logs = await client.Containers.GetContainerLogsAsync(
+                    createResponse.ID, true,
+                    new ContainerLogsParameters { ShowStdout = true, ShowStderr = true });
+
+                await client.Containers.RemoveContainerAsync(createResponse.ID, new ContainerRemoveParameters());
+
+                var (stdout, stderr) = await logs.ReadOutputToEndAsync(cancellationToken: CancellationToken.None);
+                var result = stdout.ToString().Trim();
+
+                if (waitResponse.StatusCode == 0 && !result.Contains("No such file or directory"))
+                {
+                    return (true, $"Arquivo {fileName} encontrado");
+                }
+                else
+                {
+                    return (false, $"Arquivo {fileName} não encontrado no diretório {directory}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Erro ao verificar arquivo: {ex.Message}");
             }
         }
 

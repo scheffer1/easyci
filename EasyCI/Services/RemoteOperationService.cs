@@ -26,6 +26,27 @@ namespace EasyCI.Services
                     return (false, $"Falha ao criar diretório remoto via Docker API: {createDirResult.Message}");
                 }
 
+                // Verificar se o diretório já contém um repositório git
+                var gitCheckResult = await CheckIfGitRepositoryExistsAsync(container, projectPath);
+
+                if (gitCheckResult.Success)
+                {
+                    // Diretório já contém um repositório git, fazer pull em vez de clone
+                    return await UpdateRepositoryAsync(container, repository, projectId);
+                }
+
+                // Verificar se o diretório não está vazio
+                var dirCheckResult = await CheckIfDirectoryIsEmptyAsync(container, projectPath);
+                if (!dirCheckResult.Success)
+                {
+                    // Diretório não está vazio mas não é um repositório git, limpar primeiro
+                    var cleanResult = await CleanDirectoryAsync(container, projectPath);
+                    if (!cleanResult.Success)
+                    {
+                        return (false, $"Falha ao limpar diretório existente: {cleanResult.Message}");
+                    }
+                }
+
                 string gitCommand;
 
                 if (!string.IsNullOrEmpty(repository.SshKeyPath))
@@ -81,16 +102,26 @@ namespace EasyCI.Services
 
                 if (!string.IsNullOrEmpty(repository.SshKeyPath))
                 {
-                    // Para SSH, ainda precisamos usar shell para definir variáveis de ambiente
-                    gitCommand = $"/bin/sh -c \"export GIT_SSH_COMMAND='ssh -i {repository.SshKeyPath} -o StrictHostKeyChecking=no' && git pull\"";
+                    // Para SSH, usar variável de ambiente
+                    gitCommand = $"GIT_SSH_COMMAND='ssh -i {repository.SshKeyPath} -o StrictHostKeyChecking=no' git pull";
                 }
                 else
                 {
-                    // Para HTTPS com credenciais, configurar via git config
+                    // Para HTTPS com credenciais, usar URL com credenciais
                     if (!string.IsNullOrEmpty(repository.Username) && !string.IsNullOrEmpty(repository.Password))
                     {
-                        // Usar shell para configurar credenciais temporariamente
-                        gitCommand = $"/bin/sh -c \"git config credential.helper store && echo 'https://{repository.Username}:{repository.Password}@{GetHostFromUrl(repository.Url)}' > ~/.git-credentials && git pull && rm ~/.git-credentials\"";
+                        // Construir URL com credenciais
+                        string urlWithCredentials = repository.Url;
+                        if (repository.Url.StartsWith("https://"))
+                        {
+                            urlWithCredentials = repository.Url.Replace("https://", $"https://{repository.Username}:{repository.Password}@");
+                        }
+                        else if (repository.Url.StartsWith("http://"))
+                        {
+                            urlWithCredentials = repository.Url.Replace("http://", $"http://{repository.Username}:{repository.Password}@");
+                        }
+
+                        gitCommand = $"pull {urlWithCredentials}";
                     }
                     else
                     {
@@ -164,6 +195,99 @@ namespace EasyCI.Services
                     return slashIndex > 0 ? hostPart.Substring(0, slashIndex) : hostPart;
                 }
                 return url;
+            }
+        }
+
+        /// <summary>
+        /// Verifica se o diretório já contém um repositório git
+        /// </summary>
+        private async Task<(bool Success, string Message)> CheckIfGitRepositoryExistsAsync(DockerContainer container, string directoryPath)
+        {
+            try
+            {
+                // Verificar se existe a pasta .git usando ls simples
+                var gitCheckResult = await _dockerApiService.ExecuteCommandAsync(
+                    container,
+                    directoryPath,
+                    "ls -la .git");
+
+                if (gitCheckResult.Success && !gitCheckResult.Message.Contains("No such file or directory"))
+                {
+                    return (true, "Repositório git encontrado");
+                }
+
+                return (false, "Não é um repositório git");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Erro ao verificar repositório git: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Verifica se o diretório está vazio
+        /// </summary>
+        private async Task<(bool Success, string Message)> CheckIfDirectoryIsEmptyAsync(DockerContainer container, string directoryPath)
+        {
+            try
+            {
+                var listResult = await _dockerApiService.ExecuteCommandAsync(
+                    container,
+                    directoryPath,
+                    "ls -A");
+
+                if (listResult.Success)
+                {
+                    // Se não há output de arquivos, o diretório está vazio
+                    var output = listResult.Message.Trim();
+                    // Verificar se o output contém apenas a mensagem de sucesso sem listagem de arquivos
+                    if (string.IsNullOrEmpty(output) ||
+                        (output.Contains("Comando executado com sucesso") &&
+                         !output.Contains(".") &&
+                         !output.Contains("/")))
+                    {
+                        return (true, "Diretório está vazio");
+                    }
+                }
+
+                return (false, "Diretório não está vazio");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Erro ao verificar se diretório está vazio: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Limpa o conteúdo de um diretório
+        /// </summary>
+        private async Task<(bool Success, string Message)> CleanDirectoryAsync(DockerContainer container, string directoryPath)
+        {
+            try
+            {
+                // Primeiro, listar arquivos para ver o que existe
+                var listResult = await _dockerApiService.ExecuteCommandAsync(
+                    container,
+                    directoryPath,
+                    "ls -la");
+
+                // Tentar remover arquivos visíveis
+                var cleanResult = await _dockerApiService.ExecuteCommandAsync(
+                    container,
+                    directoryPath,
+                    "rm -rf *");
+
+                // Tentar remover arquivos ocultos (pode falhar, mas não é crítico)
+                await _dockerApiService.ExecuteCommandAsync(
+                    container,
+                    directoryPath,
+                    "rm -rf .*");
+
+                return (true, "Diretório limpo com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Erro ao limpar diretório: {ex.Message}");
             }
         }
     }

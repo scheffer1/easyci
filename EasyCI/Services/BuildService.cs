@@ -116,19 +116,20 @@ namespace EasyCI.Services
 
                 if (!composeResult.Success)
                 {
-                    project.Status = $"Aviso: {composeResult.Message}";
+                    project.Status = $"Erro: {composeResult.Message}";
                     await _ciProjectService.UpdateAsync(project);
                     await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
+                    await LogAsync(logPath, $"[{DateTime.Now}] Build concluído com erro.\n");
+                    return (false, $"Erro no Docker Compose: {composeResult.Message}");
                 }
                 else
                 {
                     project.Status = "Docker Compose executado com sucesso";
                     await _ciProjectService.UpdateAsync(project);
                     await LogAsync(logPath, $"[{DateTime.Now}] Status atualizado: {project.Status}\n");
+                    await LogAsync(logPath, $"[{DateTime.Now}] Build concluído com sucesso.\n");
+                    return (true, "Build executado com sucesso. Repositório clonado e Docker Compose executado.");
                 }
-
-                await LogAsync(logPath, $"[{DateTime.Now}] Build concluído com sucesso.\n");
-                return (true, "Build iniciado com sucesso. Repositório clonado.");
             }
             catch (Exception ex)
             {

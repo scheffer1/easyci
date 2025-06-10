@@ -8,7 +8,8 @@
         Title="Monitoramento de Projetos CI" Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource BackgroundBrush}"
-        Foreground="{DynamicResource TextPrimaryBrush}">
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,26 +35,30 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Botão Voltar à esquerda -->
                 <Button x:Name="BtnBack" Grid.Column="0" Content="Voltar" Padding="15,8" HorizontalAlignment="Left" Margin="0,0,10,0" Click="BtnBack_Click" Background="{DynamicResource BackgroundLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
 
                 <!-- Filtro de texto -->
-                <TextBox Grid.Column="1" Padding="5" Margin="0,0,10,0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
+                <TextBox x:Name="TxtFilter" Grid.Column="1" Padding="5" Margin="0,0,10,0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
 
                 <!-- Filtro de status -->
-                <ComboBox Grid.Column="2" Width="150" SelectedIndex="0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}">
+                <ComboBox x:Name="CmbStatusFilter" Grid.Column="2" Width="150" SelectedIndex="0" Margin="0,0,10,0" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}">
                     <ComboBoxItem Content="Todos os Status" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBoxItem Content="Em Execução" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBoxItem Content="Concluído" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBoxItem Content="Falha" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBoxItem Content="Não Iniciado" Background="{DynamicResource CardBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </ComboBox>
+
+                <!-- Botão Atualizar -->
+                <Button x:Name="BtnRefresh" Grid.Column="3" Content="🔄 Atualizar" Padding="10,8" Click="BtnRefresh_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextLightBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
             </Grid>
 
             <!-- Tabela de Projetos -->
-            <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+            <DataGrid x:Name="DgProjects" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
                       Background="{DynamicResource BackgroundBrush}"
                       Foreground="{DynamicResource TextPrimaryBrush}"
                       BorderBrush="{DynamicResource BorderBrush}"
@@ -71,8 +76,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="Iniciar" Margin="0,0,5,0" Padding="5,2" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextLightBrush}"/>
-                                    <Button Content="Detalhes" Padding="5,2" Background="{DynamicResource BackgroundLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    <Button Content="Iniciar" Margin="0,0,5,0" Padding="5,2" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextLightBrush}" Click="BtnStart_Click"/>
+                                    <Button Content="Detalhes" Padding="5,2" Background="{DynamicResource BackgroundLightBrush}" Foreground="{DynamicResource TextPrimaryBrush}" Click="BtnDetails_Click"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
